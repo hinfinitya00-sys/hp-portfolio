@@ -1284,7 +1284,7 @@
             2. 新しいフォームを作成し、エンドポイントURLを取得
             3. action属性を "https://formspree.io/f/YOUR_FORM_ID" に変更
           -->
-          <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" id="contactForm">
+          <form action="https://formspree.io/f/mjgalqlv" method="POST" id="contactForm">
             <input type="hidden" name="_language" value="ja">
             <input type="hidden" name="_subject" value="翼工業 ホームページからのお問い合わせ">
 
@@ -1670,13 +1670,6 @@ document.getElementById('backTop').addEventListener('click', () => {
 
 // ── Contact form ───────────────────────────────────────────
 document.getElementById('contactForm').addEventListener('submit', function(e) {
-  const action = this.getAttribute('action');
-  if (action.includes('YOUR_FORM_ID')) {
-    e.preventDefault();
-    alert('【開発中】\nFormspree のフォームIDを設定してください。\nhttps://formspree.io でアカウント作成後、\naction属性のURLを更新してください。');
-    return;
-  }
-  // Formspreeが設定済みの場合はそのまま送信
   const btn = this.querySelector('.form-submit');
   btn.textContent = '送信中...';
   btn.disabled = true;
