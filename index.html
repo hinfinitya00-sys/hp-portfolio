@@ -820,6 +820,49 @@
   </div>
 </section>
 
+<!-- ═══ 新着情報 ═══ -->
+<section id="news" style="background:var(--white); padding:64px 24px;">
+  <div class="container">
+    <div class="section-label">NEWS</div>
+    <h2 class="section-title">新着<span>情報</span></h2>
+    <div style="margin-top:40px; border-top:1px solid var(--gray);">
+      <div style="display:flex; gap:24px; padding:16px 0; border-bottom:1px solid var(--gray); font-size:14px;">
+        <span style="color:var(--text-muted); flex-shrink:0;">2026.06.07</span>
+        <span style="color:var(--text-dark);">採用情報ページを公開しました</span>
+      </div>
+      <div style="display:flex; gap:24px; padding:16px 0; border-bottom:1px solid var(--gray); font-size:14px;">
+        <span style="color:var(--text-muted); flex-shrink:0;">2026.06.01</span>
+        <span style="color:var(--text-dark);">翼工業ホームページをリニューアルしました</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 担当者メッセージ ═══ -->
+<section id="message" style="background:linear-gradient(180deg, #f0f4ed 0%, var(--white) 100%); padding:64px 24px;">
+  <div class="container">
+    <div class="section-label">MESSAGE</div>
+    <h2 class="section-title">担当者<span>メッセージ</span></h2>
+    <div style="margin-top:48px; max-width:720px; background:var(--white); border-radius:var(--radius); padding:40px; box-shadow:var(--shadow-sm);">
+      <p style="font-size:15px; line-height:2; color:var(--text-dark); margin-bottom:32px;">
+        翼工業は、これからもっと成長していく会社です。<br>
+        会社と一緒に自分自身も成長でき、出した成果はちゃんと分かち合える環境を作っています。<br>
+        スタッフ同士の仲が良く、働きやすい職場です。<br><br>
+        私たちの仕事は、災害復旧や法面工事を通じて、地域の人たちの命と暮らしを守るお手伝いをすること。<br>
+        「自分の仕事が誰かの安全につながっている」という実感が、この仕事の一番の魅力だと思っています。<br><br>
+        一緒に成長したい方、ぜひ話を聞きに来てください。
+      </p>
+      <div style="display:flex; align-items:center; gap:16px; border-top:1px solid var(--gray); padding-top:24px;">
+        <div style="width:48px; height:48px; background:var(--green-mid); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px; font-weight:700; flex-shrink:0;">秋</div>
+        <div>
+          <div style="font-size:16px; font-weight:700; color:var(--text-dark);">秋中 久佳</div>
+          <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">代表　翼工業</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════════════════════════════
      SERVICES
 ═══════════════════════════════════════ -->
@@ -1061,73 +1104,6 @@
 <!-- ═══════════════════════════════════════
      RESULTS（施工実績）
 ═══════════════════════════════════════ -->
-<section id="results">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">RESULTS</div>
-      <h2 class="section-title">施工<span>実績</span></h2>
-      <p class="section-desc">
-        創業以来の豊富な施工実績。法面工事を中心に、
-        九州各地の現場で安全・品質を追求してきました。
-      </p>
-    </div>
-
-    <!-- KPI Cards -->
-    <div class="results-kpi" style="margin-top:48px;">
-      <div class="result-kpi-card reveal delay1">
-        <div class="result-kpi-num"><span class="res-counter" data-target="210">0</span><span class="result-kpi-unit">件</span></div>
-        <div class="result-kpi-label">累計施工件数</div>
-      </div>
-      <div class="result-kpi-card reveal delay2">
-        <div class="result-kpi-num"><span class="res-counter" data-target="20">0</span><span class="result-kpi-unit">件</span></div>
-        <div class="result-kpi-label">今年度施工件数</div>
-      </div>
-      <div class="result-kpi-card reveal delay3">
-        <div class="result-kpi-num"><span class="res-counter" data-target="47">0</span><span class="result-kpi-unit">県</span></div>
-        <div class="result-kpi-label">対応都道府県</div>
-      </div>
-      <div class="result-kpi-card reveal delay4">
-        <div class="result-kpi-num"><span class="res-counter" data-target="100">0</span><span class="result-kpi-unit">%</span></div>
-        <div class="result-kpi-label">安全施工達成率</div>
-      </div>
-    </div>
-
-    <!-- Month filter + Bar chart + Gallery -->
-    <div class="month-filters reveal" id="monthFilters">
-      <button class="month-btn active" data-month="all">すべて</button>
-    </div>
-
-    <div class="results-grid">
-
-      <!-- Bar chart -->
-      <div class="reveal-left">
-        <div class="chart-title">📊 工種別施工件数</div>
-        <div class="bar-chart" id="workTypeChart">
-          <!-- JS で生成 -->
-        </div>
-      </div>
-
-      <!-- Monthly bar chart -->
-      <div class="reveal-right">
-        <div class="chart-title">📅 月別施工件数（直近12ヶ月）</div>
-        <div class="bar-chart" id="monthlyChart">
-          <!-- JS で生成 -->
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Photo Gallery -->
-    <div class="reveal">
-      <div class="chart-title">📸 現場写真ギャラリー</div>
-      <div class="gallery-grid" id="photoGallery">
-        <!-- JS で生成 -->
-      </div>
-    </div>
-
-  </div>
-</section>
-
 <!-- ═══════════════════════════════════════
      COMPANY
 ═══════════════════════════════════════ -->
