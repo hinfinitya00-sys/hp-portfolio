@@ -2,404 +2,793 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>翼工業｜地形と向き合い続けて、今日も九州を守る。</title>
-<meta name="description" content="翼工業 — 福岡県飯塚市の法面工事・土木工事・災害復旧工事。国土地理院の実測標高データで描く九州の山地。斜面が崩れる前に動く会社。仲間を募集中。">
-<meta property="og:title" content="翼工業｜地形と向き合い続けて、今日も九州を守る。">
-<meta property="og:description" content="山を守ることが、人を守ること。福岡県飯塚市・翼工業。">
-<meta name="theme-color" content="#050a07">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="翼工業｜福岡県飯塚市の法面工事・土木工事・災害復旧工事。九州全域対応。現地調査・お見積り無料。">
+<meta property="og:title" content="翼工業｜法面工事・土木工事｜福岡県飯塚市">
+<meta property="og:description" content="九州の大地を、ともに守りませんか。法面工事・土木工事・災害復旧。お気軽にご相談ください。">
+<meta property="og:image" content="https://tsubasa-kogyo-fukuoka.com/images/hero-mountain.jpg">
+<title>翼工業｜法面工事・土木工事｜福岡県飯塚市</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
 <style>
 :root{
-  --bg:#050a07;
-  --ink:#f7f4ed;
+  --black:#111;
+  --white:#fff;
+  --cream:#f8f6f1;
   --gold:#c9a84c;
-  --deep:#0d2016;
-  --mincho:'Noto Serif JP',serif;
-  --gothic:'Noto Sans JP',sans-serif;
+  --gold-dark:#a8863a;
+  --green:#1a3a2a;
+  --green-mid:#2d5a3d;
+  --gray:#6b7280;
+  --border:#e5e7eb;
+  --section-pad:120px;
 }
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:var(--gothic);background:var(--bg);color:var(--ink);line-height:1.9;overflow-x:hidden;-webkit-font-smoothing:antialiased;font-weight:300}
-a{color:inherit;text-decoration:none}
-::selection{background:var(--gold);color:var(--bg)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden;cursor:none}
 
-/* crosshair cursor */
-#cx-v,#cx-h{position:fixed;top:0;left:0;background:var(--gold);pointer-events:none;z-index:9999;opacity:.8;transform:translate(-50%,-50%)}
-#cx-v{width:1px;height:24px}
-#cx-h{width:24px;height:1px}
-@media(hover:none),(pointer:coarse){#cx-v,#cx-h{display:none}}
+/* CURSOR */
+#cur{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;
+  width:10px;height:10px;background:var(--gold);border-radius:50%;
+  transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:transform .2s,width .3s,height .3s}
+#cur-ring{position:fixed;top:0;left:0;z-index:9998;pointer-events:none;
+  width:38px;height:38px;border:1.5px solid rgba(201,168,76,.5);border-radius:50%;
+  transform:translate(-50%,-50%)}
+body *:hover ~ #cur,a:hover ~ #cur{transform:translate(-50%,-50%) scale(2.5)}
 
-/* hero / canvas */
-#bg-canvas{position:fixed;inset:0;z-index:0}
-#hero{position:relative;height:100svh;min-height:560px;z-index:1}
-nav{position:fixed;top:0;left:0;width:100%;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:26px clamp(20px,4vw,52px);mix-blend-mode:difference}
-nav .logo{font-family:var(--mincho);font-weight:600;font-size:1rem;letter-spacing:.35em;text-indent:.35em}
-nav .menu{display:flex;gap:clamp(14px,2.4vw,30px)}
-nav .menu a{font-size:.66rem;letter-spacing:.28em;opacity:.85;transition:opacity .3s,color .3s}
-nav .menu a:hover{opacity:1;color:var(--gold)}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:28px 56px;display:flex;align-items:center;justify-content:space-between;
+  transition:all .5s cubic-bezier(.16,1,.3,1)}
+nav.scrolled{background:rgba(10,10,10,.96);backdrop-filter:blur(24px);
+  padding:18px 56px;box-shadow:0 1px 0 rgba(255,255,255,.06)}
+.nav-logo{font-family:'Noto Serif JP',serif;font-size:1.25rem;font-weight:900;
+  color:var(--white);letter-spacing:.15em;text-decoration:none}
+.nav-logo em{color:var(--gold);font-style:normal}
+.nav-menu{display:flex;align-items:center;gap:36px;list-style:none}
+.nav-menu a{font-size:.72rem;letter-spacing:.2em;color:rgba(255,255,255,.65);
+  text-decoration:none;text-transform:uppercase;transition:color .3s}
+.nav-menu a:hover{color:var(--white)}
+.nav-contact-btn{background:var(--gold);color:var(--black)!important;
+  padding:10px 22px;font-weight:700;font-size:.72rem!important;letter-spacing:.15em!important;
+  transition:background .3s,transform .3s!important}
+.nav-contact-btn:hover{background:var(--gold-dark)!important;transform:translateY(-2px)!important}
 
-.hero-coord{position:absolute;left:clamp(20px,4vw,52px);bottom:34px;font-size:.6rem;letter-spacing:.32em;color:var(--gold);opacity:.85;z-index:2}
-.hero-center{position:absolute;left:0;top:50%;transform:translateY(-50%);width:100%;padding:0 clamp(20px,7vw,90px);z-index:2;pointer-events:none}
-.hero-center h1{font-family:var(--mincho);font-weight:600;font-size:clamp(1.7rem,4.6vw,3.7rem);line-height:1.7;letter-spacing:.06em;max-width:18em;text-shadow:0 4px 40px rgba(5,10,7,.7)}
-.hero-hint{position:absolute;right:clamp(20px,4vw,52px);bottom:34px;font-size:.58rem;letter-spacing:.3em;color:rgba(247,244,237,.45);z-index:2;writing-mode:vertical-rl}
+/* HERO */
+#hero{position:relative;height:100vh;min-height:700px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.hero-img{position:absolute;inset:0;z-index:0;
+  background:url('images/hero-mountain.jpg') center/cover no-repeat;
+  transform:scale(1.05);transition:transform 8s ease-out}
+.hero-img.loaded{transform:scale(1)}
+.hero-overlay{position:absolute;inset:0;z-index:2;
+  background:linear-gradient(135deg,rgba(10,20,14,.75) 0%,rgba(10,20,14,.3) 60%,rgba(10,20,14,.6) 100%)}
+.hero-content{position:relative;z-index:10;max-width:900px;padding:0 48px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;
+  background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);
+  padding:8px 18px;margin-bottom:36px;
+  font-size:.68rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero-title{font-family:'Noto Serif JP',serif;font-weight:900;
+  font-size:clamp(2.8rem,7vw,6rem);color:var(--white);line-height:1.1;
+  margin-bottom:28px;letter-spacing:.02em}
+.hero-title em{color:var(--gold);font-style:normal;display:block}
+.hero-sub{font-size:clamp(.9rem,1.5vw,1.1rem);color:rgba(255,255,255,.75);
+  line-height:2;margin-bottom:52px;font-weight:300;max-width:560px}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;
+  background:var(--gold);color:var(--black);
+  font-size:.82rem;font-weight:700;letter-spacing:.15em;
+  padding:18px 40px;text-decoration:none;
+  transition:transform .3s,box-shadow .3s,background .3s}
+.btn-primary:hover{transform:translateY(-4px);
+  box-shadow:0 20px 60px rgba(201,168,76,.35);background:var(--gold-dark)}
+.btn-secondary{display:inline-flex;align-items:center;gap:10px;
+  border:1.5px solid rgba(255,255,255,.5);color:var(--white);
+  font-size:.82rem;letter-spacing:.15em;padding:18px 40px;
+  text-decoration:none;transition:border-color .3s,transform .3s,background .3s}
+.btn-secondary:hover{border-color:var(--white);background:rgba(255,255,255,.08);transform:translateY(-4px)}
+.hero-scroll-hint{position:absolute;bottom:40px;left:56px;z-index:10;
+  display:flex;align-items:center;gap:12px}
+.hero-scroll-hint span{font-size:.65rem;letter-spacing:.3em;color:rgba(255,255,255,.4);text-transform:uppercase}
+.scroll-line{width:60px;height:1px;background:linear-gradient(to right,var(--gold),transparent);
+  animation:scrollLine 2s ease-in-out infinite}
+@keyframes scrollLine{0%,100%{transform:scaleX(1);opacity:1}50%{transform:scaleX(.5);opacity:.4}}
 
-/* sections */
-section{position:relative;z-index:2;background:var(--bg)}
-.pad{max-width:1180px;margin:0 auto;padding:clamp(90px,15vh,180px) clamp(20px,5vw,60px)}
-.eyebrow{font-size:.62rem;letter-spacing:.45em;color:var(--gold);margin-bottom:30px;text-indent:.45em}
-.io{opacity:0;transform:translateY(30px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.8,.2,1)}
-.io.in{opacity:1;transform:none}
-.io.d1{transition-delay:.12s}.io.d2{transition-delay:.24s}.io.d3{transition-delay:.36s}
+/* TRUST BAR */
+#trust{background:var(--black);padding:24px 56px;
+  display:flex;align-items:center;justify-content:center;gap:56px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:12px;
+  font-size:.72rem;letter-spacing:.15em;color:rgba(255,255,255,.5);text-transform:uppercase}
+.trust-item svg{color:var(--gold);flex-shrink:0}
+.trust-divider{width:1px;height:24px;background:rgba(255,255,255,.1)}
 
-/* mission */
-#mission .pad{text-align:center}
-#mission h2{font-family:var(--mincho);font-weight:600;font-size:clamp(1.9rem,7vw,5rem);line-height:1.5;letter-spacing:.04em}
-#mission p{margin-top:40px;font-size:.85rem;color:rgba(247,244,237,.7);letter-spacing:.06em;line-height:2.4}
+/* SECTION COMMON */
+.section{padding:var(--section-pad) 0}
+.container{max-width:1200px;margin:0 auto;padding:0 56px}
+.section-eyebrow{font-size:.68rem;letter-spacing:.4em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.section-eyebrow::before{content:'';width:32px;height:1px;background:var(--gold)}
+.section-title{font-family:'Noto Serif JP',serif;font-size:clamp(2rem,4vw,3rem);
+  font-weight:700;line-height:1.2;margin-bottom:20px;color:var(--black)}
+.section-lead{font-size:1rem;line-height:2;color:var(--gray);max-width:600px}
 
-/* work */
-#work .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(201,168,76,.14);border:1px solid rgba(201,168,76,.14);margin-top:50px}
-#work .cell{background:var(--bg);padding:clamp(34px,5vw,64px) clamp(22px,3vw,40px);min-height:300px;display:flex;flex-direction:column;justify-content:space-between;transition:background .5s}
-#work .cell:hover{background:var(--deep)}
-#work .cell .no{font-family:var(--mincho);font-size:2.6rem;color:var(--gold);opacity:.5;line-height:1}
-#work .cell h3{font-family:var(--mincho);font-weight:600;font-size:1.5rem;letter-spacing:.05em}
-#work .cell .en{font-size:.6rem;letter-spacing:.28em;color:var(--gold);opacity:.75;margin-top:10px}
+/* IO REVEAL */
+.io{opacity:0;transform:translateY(48px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.io.visible{opacity:1;transform:translateY(0)}
+.io-delay-1{transition-delay:.1s}
+.io-delay-2{transition-delay:.2s}
+.io-delay-3{transition-delay:.3s}
+.io-delay-4{transition-delay:.4s}
 
-/* team */
-#team .cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,6vw,80px);align-items:center}
-#team h2{font-family:var(--mincho);font-weight:600;font-size:clamp(1.7rem,4.4vw,3rem);line-height:1.6;letter-spacing:.04em}
-#team p{margin-top:26px;font-size:.84rem;color:rgba(247,244,237,.7);line-height:2.3}
-.team-vis{aspect-ratio:1/1;border:1px solid rgba(201,168,76,.2);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle,rgba(201,168,76,.06),transparent 70%)}
-.team-vis .big{font-family:var(--mincho);font-weight:700;font-size:clamp(4rem,16vw,9rem);color:var(--gold);line-height:1}
-.team-vis .unit{font-size:.7rem;letter-spacing:.3em;color:rgba(247,244,237,.6);margin-top:12px}
+/* SERVICES */
+#services{background:var(--cream)}
+.services-intro{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:80px}
+.services-cta-box{background:var(--green);padding:48px;color:var(--white)}
+.services-cta-box p{font-size:.88rem;line-height:2;margin-bottom:24px;color:rgba(255,255,255,.8)}
+.services-cta-box strong{display:block;font-family:'Noto Serif JP',serif;font-size:1.5rem;margin-bottom:24px;line-height:1.4}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.service-card{background:var(--white);padding:48px 40px;position:relative;overflow:hidden;
+  cursor:pointer;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.service-card:hover{transform:translateY(-8px);z-index:2;box-shadow:0 32px 80px rgba(0,0,0,.12)}
+.service-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.service-card:hover::after{transform:scaleX(1)}
+.service-num{font-family:'Noto Serif JP',serif;font-size:3.5rem;font-weight:900;
+  color:rgba(201,168,76,.12);line-height:1;margin-bottom:24px}
+.service-icon-wrap{width:52px;height:52px;background:var(--cream);
+  display:flex;align-items:center;justify-content:center;margin-bottom:20px;border-radius:2px}
+.service-icon-wrap svg{color:var(--green)}
+.service-name{font-family:'Noto Serif JP',serif;font-size:1.25rem;font-weight:700;
+  margin-bottom:8px;color:var(--black);line-height:1.3}
+.service-en{font-size:.65rem;letter-spacing:.2em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:20px}
+.service-desc{font-size:.85rem;line-height:1.9;color:var(--gray);margin-bottom:28px}
+.service-link{font-size:.75rem;letter-spacing:.1em;color:var(--green);
+  font-weight:700;display:flex;align-items:center;gap:6px}
+.service-link::after{content:'→'}
 
-/* join */
-#join{background:var(--deep)}
-#join .pad{text-align:center}
-#join h2{font-family:var(--mincho);font-weight:600;font-size:clamp(1.9rem,5.6vw,4.2rem);line-height:1.5;letter-spacing:.04em}
-#join .lead{margin:34px auto 0;max-width:34em;font-size:.88rem;color:rgba(247,244,237,.78);line-height:2.4}
-#join .pos{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:60px 0 50px;text-align:left}
-#join .card{border:1px solid rgba(201,168,76,.28);border-radius:4px;padding:34px 28px;transition:border-color .4s,transform .4s,background .4s}
-#join .card:hover{border-color:var(--gold);transform:translateY(-6px);background:rgba(201,168,76,.05)}
-#join .card .role{font-family:var(--mincho);font-weight:600;font-size:1.2rem;letter-spacing:.04em}
-#join .card .tag{display:inline-block;margin-top:16px;font-size:.62rem;letter-spacing:.18em;color:var(--gold);border:1px solid rgba(201,168,76,.4);border-radius:30px;padding:5px 14px}
-.cta{display:inline-block;margin-top:8px;font-family:var(--mincho);font-size:1.05rem;letter-spacing:.12em;color:var(--bg);background:var(--gold);padding:18px 50px;border-radius:40px;transition:transform .4s,box-shadow .4s}
-.cta:hover{transform:translateY(-4px);box-shadow:0 20px 50px -20px var(--gold)}
+/* FREE ESTIMATE */
+#estimate{background:var(--green);padding:80px 0}
+.estimate-inner{display:grid;grid-template-columns:1fr auto;gap:60px;align-items:center}
+.estimate-text h2{font-family:'Noto Serif JP',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);
+  font-weight:700;color:var(--white);line-height:1.3;margin-bottom:20px}
+.estimate-text p{font-size:.95rem;line-height:2;color:rgba(255,255,255,.75)}
+.estimate-box{background:var(--gold);padding:48px 56px;text-align:center;min-width:320px}
+.estimate-box .tel-label{font-size:.68rem;letter-spacing:.25em;color:var(--black);margin-bottom:8px;display:block}
+.estimate-box .tel{font-family:'Noto Serif JP',serif;font-size:2.2rem;font-weight:900;
+  color:var(--black);letter-spacing:.05em;text-decoration:none;display:block;margin-bottom:4px}
+.estimate-box .hours{font-size:.72rem;color:rgba(0,0,0,.6);margin-bottom:24px}
+.estimate-box .btn-dark{display:block;background:var(--black);color:var(--white);
+  font-size:.8rem;font-weight:700;letter-spacing:.15em;padding:16px 32px;
+  text-decoration:none;transition:background .3s}
+.estimate-box .btn-dark:hover{background:#333}
 
-/* info */
-#info table{width:100%;border-collapse:collapse;margin-top:46px;font-size:.9rem}
-#info th,#info td{text-align:left;padding:22px 14px;border-bottom:1px solid rgba(201,168,76,.16);vertical-align:top}
-#info th{width:220px;color:var(--gold);font-weight:500;letter-spacing:.1em}
-#info td{color:rgba(247,244,237,.88);font-weight:300}
+/* TEAM */
+#team{background:var(--white)}
+.team-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.team-photo{position:relative}
+.team-photo img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.team-photo-label{position:absolute;bottom:-1px;left:0;right:0;
+  background:var(--green);padding:20px 28px;
+  display:flex;align-items:center;justify-content:space-between}
+.team-photo-label span{font-size:.75rem;letter-spacing:.2em;color:rgba(255,255,255,.7);text-transform:uppercase}
+.team-photo-label strong{font-family:'Noto Serif JP',serif;font-size:1rem;color:var(--white)}
+.team-points{display:flex;flex-direction:column;gap:0;margin-top:48px}
+.team-point{padding:24px 0;border-bottom:1px solid var(--border);
+  display:flex;gap:20px;align-items:flex-start}
+.team-point:first-child{border-top:1px solid var(--border)}
+.team-point-icon{width:40px;height:40px;background:var(--cream);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-family:'Noto Serif JP',serif;font-size:1rem;font-weight:700;color:var(--green)}
+.team-point-text strong{display:block;font-size:.9rem;font-weight:700;
+  color:var(--black);margin-bottom:4px}
+.team-point-text span{font-size:.82rem;color:var(--gray);line-height:1.8}
 
-/* contact */
-#contact .pad{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(30px,6vw,80px);align-items:start}
-.tel .lbl{font-size:.62rem;letter-spacing:.3em;color:var(--gold)}
-.tel .num{font-family:var(--mincho);font-weight:600;font-size:clamp(2rem,6vw,3.2rem);letter-spacing:.03em;margin:12px 0;display:inline-block}
-.tel .num:hover{color:var(--gold)}
-.tel p{font-size:.8rem;color:rgba(247,244,237,.6)}
-form{display:flex;flex-direction:column;gap:16px}
-form label{font-size:.66rem;letter-spacing:.18em;color:var(--gold)}
-form input,form textarea{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(201,168,76,.3);padding:12px 2px;color:var(--ink);font-family:inherit;font-size:.95rem;transition:border-color .3s}
-form input:focus,form textarea:focus{outline:none;border-color:var(--gold)}
-form textarea{resize:vertical;min-height:90px}
-form button{margin-top:10px;align-self:flex-start;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:var(--mincho);letter-spacing:.14em;padding:15px 44px;border-radius:40px;cursor:pointer;transition:.35s;font-size:.95rem}
-form button:hover{background:var(--gold);color:var(--bg)}
-.form-ok{display:none;color:var(--gold);font-size:.86rem;margin-top:6px}
+/* JOIN */
+#join{background:var(--black);padding:var(--section-pad) 0}
+.join-header{text-align:center;max-width:700px;margin:0 auto 80px}
+.join-header .section-eyebrow{justify-content:center}
+.join-header .section-title{color:var(--white)}
+.join-header .section-title em{color:var(--gold);font-style:normal}
+.join-header p{color:rgba(255,255,255,.6);font-size:.95rem;line-height:2}
+.jobs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:60px}
+.job-card{background:#1a1a1a;padding:48px 36px;position:relative;overflow:hidden;
+  transition:background .3s}
+.job-card:hover{background:#222}
+.job-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold)}
+.job-num{font-family:'Noto Serif JP',serif;font-size:3rem;font-weight:900;
+  color:rgba(201,168,76,.1);line-height:1;margin-bottom:24px}
+.job-title{font-family:'Noto Serif JP',serif;font-size:1.2rem;font-weight:700;
+  color:var(--white);margin-bottom:8px;line-height:1.4}
+.job-badge{display:inline-block;background:rgba(201,168,76,.15);
+  border:1px solid rgba(201,168,76,.3);color:var(--gold);
+  font-size:.65rem;letter-spacing:.1em;padding:4px 12px;margin-bottom:20px}
+.job-desc{font-size:.82rem;line-height:1.9;color:rgba(255,255,255,.5);margin-bottom:28px}
+.job-conditions{display:flex;flex-direction:column;gap:8px}
+.job-condition{font-size:.75rem;color:rgba(255,255,255,.4);
+  display:flex;align-items:center;gap:8px}
+.job-condition::before{content:'';width:4px;height:4px;background:var(--gold);
+  border-radius:50%;flex-shrink:0}
+.join-cta{text-align:center}
+.join-cta p{color:rgba(255,255,255,.5);font-size:.88rem;margin-bottom:24px;line-height:1.8}
 
-footer{border-top:1px solid rgba(201,168,76,.16);text-align:center;padding:40px 20px;font-size:.66rem;letter-spacing:.12em;color:rgba(247,244,237,.4);position:relative;z-index:2;background:var(--bg)}
+/* INFO */
+#info{background:var(--cream)}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:60px}
+.info-table{width:100%;border-collapse:collapse}
+.info-table tr{border-bottom:1px solid var(--border)}
+.info-table th{font-size:.75rem;font-weight:500;letter-spacing:.1em;
+  color:var(--gold);text-align:left;padding:20px 0;width:130px;vertical-align:top}
+.info-table td{font-size:.88rem;color:#444;padding:20px 0;line-height:1.8}
+.info-map{position:relative;height:360px;overflow:hidden}
+.info-map iframe{width:100%;height:100%;border:0;
+  filter:grayscale(100%) contrast(1.1)}
 
-@media(max-width:860px){
-  #work .grid{grid-template-columns:1fr}
-  #team .cols,#contact .pad{grid-template-columns:1fr}
-  #join .pos{grid-template-columns:1fr}
-  .team-vis{max-width:340px;margin:0 auto}
+/* CONTACT */
+#contact{background:var(--white);padding:var(--section-pad) 0}
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px}
+.contact-info .tel-big{font-family:'Noto Serif JP',serif;font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:700;color:var(--black);text-decoration:none;
+  display:block;margin-bottom:8px;letter-spacing:.03em;
+  transition:color .3s}
+.contact-info .tel-big:hover{color:var(--gold)}
+.contact-info .tel-hours{font-size:.78rem;letter-spacing:.15em;color:var(--gray);margin-bottom:48px}
+.contact-points{display:flex;flex-direction:column;gap:0}
+.contact-point{padding:20px 0;border-bottom:1px solid var(--border);
+  display:flex;gap:16px;align-items:center}
+.contact-point:first-child{border-top:1px solid var(--border)}
+.cp-label{font-size:.68rem;letter-spacing:.15em;color:var(--gold);
+  text-transform:uppercase;min-width:80px;font-weight:700}
+.cp-val{font-size:.85rem;color:#444}
+.contact-form-wrap .form-title{font-family:'Noto Serif JP',serif;font-size:1.4rem;
+  font-weight:700;margin-bottom:8px}
+.contact-form-wrap .form-sub{font-size:.82rem;color:var(--gray);margin-bottom:36px;line-height:1.8}
+.form-group{margin-bottom:4px;position:relative}
+.form-group input,.form-group textarea,.form-group select{
+  width:100%;background:var(--cream);border:none;
+  border-bottom:2px solid var(--border);color:var(--black);
+  font-family:'Noto Sans JP',sans-serif;font-size:.9rem;
+  padding:18px 0;outline:none;transition:border-color .3s;
+  -webkit-appearance:none;border-radius:0}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--gold)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:#bbb}
+.form-group textarea{height:120px;resize:none}
+.form-group select option{background:var(--white)}
+.form-submit{margin-top:28px;background:var(--black);color:var(--white);
+  border:none;font-family:'Noto Sans JP',sans-serif;font-size:.82rem;
+  font-weight:700;letter-spacing:.2em;padding:18px 48px;
+  cursor:pointer;transition:background .3s,transform .3s}
+.form-submit:hover{background:var(--green);transform:translateY(-3px)}
+.form-thanks{display:none;background:var(--cream);padding:32px;
+  text-align:center;font-size:.9rem;line-height:2;color:var(--green)}
+.form-thanks strong{display:block;font-family:'Noto Serif JP',serif;font-size:1.2rem;margin-bottom:8px}
+
+/* FOOTER */
+footer{background:var(--black);padding:48px 0}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px}
+.footer-logo{font-family:'Noto Serif JP',serif;font-size:1.1rem;font-weight:700;
+  color:var(--white);letter-spacing:.15em}
+.footer-logo em{color:var(--gold);font-style:normal}
+.footer-links{display:flex;gap:28px;flex-wrap:wrap}
+.footer-links a{font-size:.72rem;letter-spacing:.1em;color:rgba(255,255,255,.35);
+  text-decoration:none;transition:color .3s}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:.7rem;color:rgba(255,255,255,.25);letter-spacing:.1em}
+
+/* PHONE FAB */
+.phone-fab{position:fixed;bottom:32px;right:32px;z-index:500;
+  background:var(--gold);color:var(--black);text-decoration:none;
+  display:flex;align-items:center;gap:10px;padding:14px 24px;
+  font-size:.78rem;font-weight:700;letter-spacing:.1em;
+  box-shadow:0 8px 32px rgba(201,168,76,.35);
+  transition:transform .3s,box-shadow .3s;opacity:0}
+.phone-fab.show{opacity:1}
+.phone-fab:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(201,168,76,.45)}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:20px 24px}
+  nav.scrolled{padding:14px 24px}
+  .nav-menu{display:none}
+  .container{padding:0 24px}
+  :root{--section-pad:80px}
+  .hero-content{padding:0 24px}
+  .hero-title{font-size:clamp(2.2rem,9vw,3.5rem)}
+  .hero-btns{flex-direction:column}
+  .btn-primary,.btn-secondary{text-align:center;justify-content:center;padding:16px 32px}
+  #trust{gap:24px;padding:24px}
+  .trust-divider{display:none}
+  .services-intro,.services-grid,.team-layout,.info-grid,.contact-layout{grid-template-columns:1fr;gap:40px}
+  .jobs-grid{grid-template-columns:1fr;gap:2px}
+  .estimate-inner{grid-template-columns:1fr;gap:40px}
+  .estimate-box{min-width:0}
+  .hero-scroll-hint{left:24px}
+  .phone-fab{bottom:20px;right:20px;padding:12px 18px;font-size:.72rem}
 }
-@media(max-width:480px){
-  nav .menu{gap:12px}
-  nav .menu a{font-size:.58rem;letter-spacing:.18em}
-  .hero-hint{display:none}
-}
-@media(prefers-reduced-motion:reduce){.io{transition:none;opacity:1;transform:none}}
 </style>
 </head>
 <body>
 
-<div id="cx-v"></div><div id="cx-h"></div>
-<canvas id="bg-canvas"></canvas>
+<div id="cur"></div>
+<div id="cur-ring"></div>
 
-<nav>
-  <div class="logo">翼工業</div>
-  <div class="menu">
-    <a href="#work">WORK</a>
-    <a href="#team">TEAM</a>
-    <a href="#join">JOIN</a>
-    <a href="#info">INFO</a>
-  </div>
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">翼<em>工</em>業</a>
+  <ul class="nav-menu">
+    <li><a href="#services">事業内容</a></li>
+    <li><a href="#estimate">お見積り</a></li>
+    <li><a href="#team">私たちについて</a></li>
+    <li><a href="#join">採用情報</a></li>
+    <li><a href="#contact" class="nav-contact-btn">お問い合わせ</a></li>
+  </ul>
 </nav>
 
-<header id="hero">
-  <div class="hero-center"><h1>地形と向き合い続けて、<br>今日も九州を守る。</h1></div>
-  <div class="hero-coord">33.636°N 130.692°E — IIZUKA, FUKUOKA</div>
-  <div class="hero-hint">SCROLL</div>
-</header>
-
-<section id="mission">
-  <div class="pad">
-    <div class="eyebrow io">MISSION</div>
-    <h2 class="io d1">山を守ることが、<br>人を守ること。</h2>
-    <p class="io d2">翼工業は、斜面が崩れる前に動く。<br>雨が降る前に備える。<br>九州の山と向き合い続けてきた、それだけの会社だ。</p>
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-img" id="heroImg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Fukuoka Iizuka — Slope Protection & Civil Engineering</div>
+    <h1 class="hero-title">
+      九州の大地を、<em>守り続けています。</em>
+    </h1>
+    <p class="hero-sub">
+      法面工事・土木工事・災害復旧工事。<br>
+      福岡県飯塚市を拠点に、九州全域で対応いたします。<br>
+      現地調査・お見積りは無料です。お気軽にご相談ください。
+    </p>
+    <div class="hero-btns">
+      <a href="#estimate" class="btn-primary">無料でご相談する</a>
+      <a href="#services" class="btn-secondary">事業内容を見る</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
-<section id="work">
-  <div class="pad">
-    <div class="eyebrow io">WORK</div>
-    <div class="grid">
-      <div class="cell io"><div class="no">01</div><div><h3>法面保護工事</h3><div class="en">SLOPE PROTECTION</div></div></div>
-      <div class="cell io d1"><div class="no">02</div><div><h3>土木工事</h3><div class="en">CIVIL ENGINEERING</div></div></div>
-      <div class="cell io d2"><div class="no">03</div><div><h3>災害復旧</h3><div class="en">DISASTER RECOVERY</div></div></div>
+<!-- TRUST BAR -->
+<div id="trust">
+  <div class="trust-item">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+    建設業許可取得
+  </div>
+  <div class="trust-divider"></div>
+  <div class="trust-item">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    九州全域対応
+  </div>
+  <div class="trust-divider"></div>
+  <div class="trust-item">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    緊急・災害復旧対応
+  </div>
+  <div class="trust-divider"></div>
+  <div class="trust-item">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+    現地調査・お見積り無料
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services" class="section">
+  <div class="container">
+    <div class="services-intro">
+      <div>
+        <p class="section-eyebrow io">Services</p>
+        <h2 class="section-title io io-delay-1">斜面の崩壊を防ぎ、<br>地域の安全を守ります。</h2>
+        <p class="section-lead io io-delay-2">
+          法面工事をはじめとする専門工事で、
+          自然災害から人々の暮らしを守ることが私たちの使命です。
+          小規模から大規模工事まで、九州全域でご対応いたします。
+        </p>
+      </div>
+      <div class="services-cta-box io io-delay-2">
+        <strong>どんな工事でも、まずご相談ください。</strong>
+        <p>「こんな工事、お願いできるの？」という段階でも構いません。現地を拝見した上で、最適なご提案をいたします。</p>
+        <a href="#contact" class="btn-primary" style="display:inline-flex;font-size:.78rem;padding:14px 28px">相談してみる</a>
+      </div>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card io">
+        <div class="service-num">01</div>
+        <div class="service-icon-wrap">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 19l4-8 4 4 4-6 4 10"/><path d="M3 19h18"/></svg>
+        </div>
+        <div class="service-en">Slope Protection</div>
+        <div class="service-name">法面保護工事</div>
+        <p class="service-desc">斜面の崩壊・侵食を防ぐ専門工事。法枠工・アンカー工・吹付工・グラウンドアンカーなど、現場の状況に合わせた最適な工法をご提案します。</p>
+        <a href="#contact" class="service-link">詳しく相談する</a>
+      </div>
+      <div class="service-card io io-delay-1">
+        <div class="service-num">02</div>
+        <div class="service-icon-wrap">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="14" width="18" height="5"/><path d="M7 14v-4h10v4"/><path d="M10 10V7h4v3"/><line x1="2" y1="19" x2="22" y2="19"/></svg>
+        </div>
+        <div class="service-en">Civil Engineering</div>
+        <div class="service-name">土木工事</div>
+        <p class="service-desc">道路・河川・排水路・擁壁などの一般土木工事を承ります。地域インフラの維持・整備を通じて、安心できる生活環境づくりに貢献しています。</p>
+        <a href="#contact" class="service-link">詳しく相談する</a>
+      </div>
+      <div class="service-card io io-delay-2">
+        <div class="service-num">03</div>
+        <div class="service-icon-wrap">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="service-en">Disaster Recovery</div>
+        <div class="service-name">災害復旧工事</div>
+        <p class="service-desc">豪雨・台風・地震による法面崩壊や土砂災害に迅速に対応します。緊急の応急処置から本格的な復旧工事まで、官公庁・民間を問わずご対応可能です。</p>
+        <a href="#contact" class="service-link">緊急のご相談はこちら</a>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="team">
-  <div class="pad cols">
-    <div>
-      <div class="eyebrow io">TEAM</div>
-      <h2 class="io d1">平均年齢29歳。<br>若い力で、最前線へ。</h2>
-      <p class="io d2">来年、株式会社へ。福利厚生を整えながら、一緒に会社を作る。</p>
+<!-- FREE ESTIMATE -->
+<section id="estimate">
+  <div class="container">
+    <div class="estimate-inner">
+      <div class="estimate-text io">
+        <p class="section-eyebrow" style="color:rgba(255,255,255,.4)">Free Estimate</p>
+        <h2>現地調査・お見積りは<br>すべて無料です。</h2>
+        <p>「どんな工事が必要か分からない」「費用の目安だけ知りたい」という段階でもお気軽にお声がけください。まず現地を確認した上で、丁寧にご説明いたします。</p>
+      </div>
+      <div class="estimate-box io io-delay-2">
+        <span class="tel-label">お電話でのご相談</span>
+        <a href="tel:0948806993" class="tel">0948-80-6993</a>
+        <p class="hours">受付 8:00〜18:00（緊急時はご相談ください）</p>
+        <a href="#contact" class="btn-dark">メールで問い合わせる</a>
+      </div>
     </div>
-    <div class="team-vis io d2"><div class="big">29</div><div class="unit">AVERAGE AGE</div></div>
   </div>
 </section>
 
+<!-- TEAM -->
+<section id="team" class="section">
+  <div class="container">
+    <div class="team-layout">
+      <div class="team-photo io">
+        <img src="images/team.jpg" alt="翼工業スタッフ一同" loading="lazy"
+          onerror="this.style.background='#1a3a2a';this.style.aspectRatio='4/3';this.removeAttribute('src')">
+        <div class="team-photo-label">
+          <span>Tsubasa Kogyo Team</span>
+          <strong>全員で、現場に向かいます。</strong>
+        </div>
+      </div>
+      <div>
+        <p class="section-eyebrow io">About Us</p>
+        <h2 class="section-title io io-delay-1">若いチームが、<br>本気で取り組んでいます。</h2>
+        <p class="section-lead io io-delay-2">
+          スタッフの多くが20〜30代。未経験からスタートしたメンバーも多く、
+          現場で経験を積みながら成長できる環境を整えています。
+          来年には株式会社化を予定しており、福利厚生もさらに充実させていきます。
+        </p>
+        <div class="team-points">
+          <div class="team-point io io-delay-1">
+            <div class="team-point-icon">資</div>
+            <div class="team-point-text">
+              <strong>資格取得を全力でサポート</strong>
+              <span>土木施工管理技士など、各種資格の取得費用は会社が負担。先輩スタッフが丁寧に指導します。</span>
+            </div>
+          </div>
+          <div class="team-point io io-delay-2">
+            <div class="team-point-icon">給</div>
+            <div class="team-point-text">
+              <strong>インセンティブ制度あり</strong>
+              <span>成果はきちんと評価します。仕事に取り組んだ分だけ、収入に反映される仕組みを設けています。</span>
+            </div>
+          </div>
+          <div class="team-point io io-delay-3">
+            <div class="team-point-icon">環</div>
+            <div class="team-point-text">
+              <strong>働きやすい環境づくり</strong>
+              <span>完全週休2日制・残業少なめ。来年の株式会社化に向けて、福利厚生を継続的に整備しています。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN -->
 <section id="join">
-  <div class="pad">
-    <div class="eyebrow io">JOIN</div>
-    <h2 class="io d1">人生を賭ける場所を、<br>探しているか。</h2>
-    <p class="lead io d2">技術は教える。資格は取らせる。<br>インセンティブで、成果を分かち合う。<br>必要なのは、ただ本気であることだけ。</p>
-    <div class="pos">
-      <div class="card io"><div class="role">法面工・土木作業員</div><span class="tag">未経験歓迎</span></div>
-      <div class="card io d1"><div class="role">重機オペレーター</div><span class="tag">経験者優遇</span></div>
-      <div class="card io d2"><div class="role">現場監督候補</div><span class="tag">将来の幹部候補</span></div>
+  <div class="container">
+    <div class="join-header">
+      <p class="section-eyebrow io">Recruit</p>
+      <h2 class="section-title io io-delay-1">一緒に、<em>九州の大地を守りませんか。</em></h2>
+      <p class="io io-delay-2">
+        未経験の方も大歓迎です。資格の取得から現場での技術習得まで、
+        丁寧にサポートいたします。まずはお気軽にご連絡ください。
+      </p>
     </div>
-    <a href="#contact" class="cta io d2">話を聞きに来る →</a>
+    <div class="jobs-grid">
+      <div class="job-card io">
+        <div class="job-num">01</div>
+        <div class="job-title">法面工・土木作業員</div>
+        <span class="job-badge">未経験歓迎</span>
+        <p class="job-desc">入社時のスキルは問いません。先輩スタッフがゼロから丁寧に教えます。やる気さえあれば大丈夫です。</p>
+        <div class="job-conditions">
+          <div class="job-condition">月給 200,000円〜（経験・能力考慮）</div>
+          <div class="job-condition">資格取得費用 全額会社負担</div>
+          <div class="job-condition">完全週休2日制（土日祝）</div>
+        </div>
+      </div>
+      <div class="job-card io io-delay-1">
+        <div class="job-num">02</div>
+        <div class="job-title">重機オペレーター</div>
+        <span class="job-badge">経験者優遇</span>
+        <p class="job-desc">ユンボ・バックホウなどの操作経験がある方を優遇します。幅広い現場で活躍していただけます。</p>
+        <div class="job-conditions">
+          <div class="job-condition">月給 220,000円〜（経験考慮）</div>
+          <div class="job-condition">各種手当・交通費支給</div>
+          <div class="job-condition">インセンティブ制度あり</div>
+        </div>
+      </div>
+      <div class="job-card io io-delay-2">
+        <div class="job-num">03</div>
+        <div class="job-title">現場監督候補</div>
+        <span class="job-badge">幹部候補</span>
+        <p class="job-desc">将来の幹部として会社を支えてくれる方を募集しています。施工管理技士の取得も全力でバックアップします。</p>
+        <div class="job-conditions">
+          <div class="job-condition">月給 230,000円〜（経験考慮）</div>
+          <div class="job-condition">施工管理技士取得支援</div>
+          <div class="job-condition">株式会社化後の昇進あり</div>
+        </div>
+      </div>
+    </div>
+    <div class="join-cta io">
+      <p>「話だけ聞いてみたい」という段階でも、お気軽にご連絡ください。</p>
+      <a href="#contact" class="btn-primary">採用についてお問い合わせ</a>
+    </div>
   </div>
 </section>
 
-<section id="info">
-  <div class="pad">
-    <div class="eyebrow io">INFO</div>
-    <table class="io d1">
-      <tr><th>会社名</th><td>翼工業</td></tr>
-      <tr><th>所在地</th><td>福岡県飯塚市南尾338-3</td></tr>
-      <tr><th>電話</th><td><a href="tel:0948806993">0948-80-6993</a></td></tr>
-      <tr><th>建設業許可</th><td>福岡県知事許可（般-6）第116937号</td></tr>
-      <tr><th>事業内容</th><td>法面工事・土木工事・災害復旧工事</td></tr>
-      <tr><th>今後の予定</th><td>株式会社化（2026年予定）・福利厚生整備中</td></tr>
-    </table>
+<!-- INFO -->
+<section id="info" class="section">
+  <div class="container">
+    <p class="section-eyebrow io">Company</p>
+    <h2 class="section-title io io-delay-1">会社概要</h2>
+    <div class="info-grid">
+      <table class="info-table io">
+        <tr><th>会社名</th><td>翼工業</td></tr>
+        <tr><th>建設業許可</th><td>福岡県知事許可（般-6）第116937号</td></tr>
+        <tr><th>所在地</th><td>〒820-0083<br>福岡県飯塚市南尾338-3</td></tr>
+        <tr><th>電話番号</th><td><a href="tel:0948806993" style="color:var(--gold)">0948-80-6993</a></td></tr>
+        <tr><th>事業内容</th><td>法面工事・土木工事・災害復旧工事</td></tr>
+        <tr><th>対応エリア</th><td>九州全域</td></tr>
+        <tr><th>営業時間</th><td>8:00〜18:00</td></tr>
+        <tr><th>今後の予定</th><td>株式会社化（2026年予定）<br>福利厚生整備中</td></tr>
+      </table>
+      <div class="info-map io io-delay-1">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3300!2d130.6892!3d33.636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDM4JzA5LjYiTiAxMzDCsDQxJzIxLjEiRQ!5e0!3m2!1sja!2sjp!4v1" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
   </div>
 </section>
 
+<!-- CONTACT -->
 <section id="contact">
-  <div class="pad">
-    <div class="tel">
-      <div class="eyebrow io">CONTACT</div>
-      <div class="lbl io d1">お電話でのご相談・ご応募</div>
-      <a class="num io d1" href="tel:0948806993">0948-80-6993</a>
-      <p class="io d2">工事のご相談も、採用のお問い合わせも。まずはお気軽に。</p>
+  <div class="container">
+    <div class="contact-layout">
+      <div class="contact-info">
+        <p class="section-eyebrow io">Contact</p>
+        <h2 class="section-title io io-delay-1">お問い合わせ</h2>
+        <p class="section-lead io io-delay-2" style="margin-bottom:36px">
+          工事のご依頼・ご相談・採用に関するお問い合わせは、
+          お電話またはフォームよりお気軽にどうぞ。
+        </p>
+        <a href="tel:0948806993" class="tel-big io io-delay-2">0948-80-6993</a>
+        <p class="tel-hours io io-delay-3">受付時間 8:00〜18:00（緊急時はご相談ください）</p>
+        <div class="contact-points">
+          <div class="contact-point io">
+            <span class="cp-label">所在地</span>
+            <span class="cp-val">福岡県飯塚市南尾338-3</span>
+          </div>
+          <div class="contact-point io io-delay-1">
+            <span class="cp-label">お見積り</span>
+            <span class="cp-val">現地調査・お見積り 無料</span>
+          </div>
+          <div class="contact-point io io-delay-2">
+            <span class="cp-label">対応エリア</span>
+            <span class="cp-val">九州全域</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-wrap io io-delay-1">
+        <h3 class="form-title">メールでのお問い合わせ</h3>
+        <p class="form-sub">2営業日以内にご返信いたします。<br>お急ぎの場合はお電話でご連絡ください。</p>
+        <div id="contactForm">
+          <div class="form-group">
+            <input type="text" placeholder="お名前 *" id="fname" required>
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="会社名・組織名">
+          </div>
+          <div class="form-group">
+            <input type="tel" placeholder="電話番号 *" id="ftel" required>
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="メールアドレス">
+          </div>
+          <div class="form-group">
+            <select id="ftype">
+              <option value="" disabled selected>お問い合わせ種別</option>
+              <option>法面工事のご依頼・ご相談</option>
+              <option>土木工事のご依頼・ご相談</option>
+              <option>災害復旧（緊急）</option>
+              <option>お見積り依頼</option>
+              <option>採用についてのご質問</option>
+              <option>その他</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <textarea placeholder="お問い合わせ内容 *" id="fmsg" required></textarea>
+          </div>
+          <button class="form-submit" onclick="submitForm()">送信する →</button>
+        </div>
+        <div class="form-thanks" id="formThanks">
+          <strong>ありがとうございます。</strong>
+          内容を確認の上、2営業日以内にご連絡いたします。
+        </div>
+      </div>
     </div>
-    <form class="io d2" id="cform">
-      <div><label for="cn">お名前</label><input id="cn" type="text" required></div>
-      <div><label for="ct">電話番号</label><input id="ct" type="tel"></div>
-      <div><label for="cc">内容</label><textarea id="cc" required></textarea></div>
-      <button type="submit">送信する</button>
-      <div class="form-ok" id="cok">ありがとうございます。2営業日以内にご連絡します。</div>
-    </form>
   </div>
 </section>
 
-<footer>© <span id="yr"></span> 翼工業 TSUBASA KOGYO — 福岡県飯塚市南尾338-3 / 0948-80-6993</footer>
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">翼<em>工</em>業</div>
+      <nav class="footer-links">
+        <a href="#services">事業内容</a>
+        <a href="#estimate">お見積り</a>
+        <a href="#team">私たちについて</a>
+        <a href="#join">採用情報</a>
+        <a href="#contact">お問い合わせ</a>
+      </nav>
+      <p class="footer-copy">© 2024 翼工業 All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<a href="tel:0948806993" class="phone-fab" id="phoneFab">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+  今すぐ電話する
+</a>
+
 <script>
+gsap.registerPlugin(ScrollTrigger);
+
+// CURSOR
+const cur = document.getElementById('cur');
+const ring = document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+gsap.ticker.add(()=>{
+  rx+=(mx-rx)*.1;ry+=(my-ry)*.1;
+  gsap.set(cur,{x:mx,y:my});
+  gsap.set(ring,{x:rx,y:ry});
+});
+document.querySelectorAll('a,button,.service-card,.job-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{gsap.to(cur,{scale:2.5,duration:.3});gsap.to(ring,{scale:1.5,opacity:.3,duration:.3})});
+  el.addEventListener('mouseleave',()=>{gsap.to(cur,{scale:1,duration:.3});gsap.to(ring,{scale:1,opacity:1,duration:.3})});
+});
+
+// HERO IMAGE
+setTimeout(()=>document.getElementById('heroImg').classList.add('loaded'),100);
+
+// THREE.JS HERO - ワイヤーフレーム地形オーバーレイ
 (function(){
-"use strict";
-document.getElementById("yr").textContent=new Date().getFullYear();
-var hasThree=typeof THREE!=="undefined", hasGsap=typeof gsap!=="undefined";
-
-/* ---------- crosshair cursor ---------- */
-(function(){
-  var v=document.getElementById("cx-v"),h=document.getElementById("cx-h");
-  if(hasGsap){
-    var xv=gsap.quickTo(v,"x",{duration:.12,ease:"power2"}),yv=gsap.quickTo(v,"y",{duration:.12,ease:"power2"});
-    var xh=gsap.quickTo(h,"x",{duration:.12,ease:"power2"}),yh=gsap.quickTo(h,"y",{duration:.12,ease:"power2"});
-    addEventListener("mousemove",function(e){xv(e.clientX);yv(e.clientY);xh(e.clientX);yh(e.clientY);});
-  }else{
-    addEventListener("mousemove",function(e){var t="translate("+e.clientX+"px,"+e.clientY+"px) translate(-50%,-50%)";v.style.transform=t;h.style.transform=t;});
-  }
-})();
-
-/* ---------- IntersectionObserver reveals ---------- */
-(function(){
-  var els=document.querySelectorAll(".io");
-  if(!("IntersectionObserver" in window)){els.forEach(function(e){e.classList.add("in");});return;}
-  var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target);}});},{threshold:.18});
-  els.forEach(function(e){io.observe(e);});
-})();
-
-/* ---------- contact form ---------- */
-(function(){
-  var f=document.getElementById("cform");
-  f.addEventListener("submit",function(e){e.preventDefault();document.getElementById("cok").style.display="block";f.querySelector("button").textContent="送信しました";});
-})();
-
-/* ---------- simplex noise (fallback terrain) ---------- */
-function makeSimplex(){
-  var grad3=[[1,1,0],[-1,1,0],[1,-1,0],[-1,-1,0],[1,0,1],[-1,0,1],[1,0,-1],[-1,0,-1],[0,1,1],[0,-1,1],[0,1,-1],[0,-1,-1]];
-  var p=[];for(var i=0;i<256;i++)p[i]=Math.floor(Math.random()*256);
-  var perm=[];for(i=0;i<512;i++)perm[i]=p[i&255];
-  function dot(g,x,y){return g[0]*x+g[1]*y;}
-  var F2=0.5*(Math.sqrt(3)-1),G2=(3-Math.sqrt(3))/6;
-  return function(xin,yin){
-    var s=(xin+yin)*F2,i=Math.floor(xin+s),j=Math.floor(yin+s);
-    var t=(i+j)*G2,X0=i-t,Y0=j-t,x0=xin-X0,y0=yin-Y0;
-    var i1,j1;if(x0>y0){i1=1;j1=0;}else{i1=0;j1=1;}
-    var x1=x0-i1+G2,y1=y0-j1+G2,x2=x0-1+2*G2,y2=y0-1+2*G2;
-    var ii=i&255,jj=j&255;
-    var gi0=perm[ii+perm[jj]]%12,gi1=perm[ii+i1+perm[jj+j1]]%12,gi2=perm[ii+1+perm[jj+1]]%12;
-    var n0=0,n1=0,n2=0,t0=0.5-x0*x0-y0*y0;
-    if(t0>=0){t0*=t0;n0=t0*t0*dot(grad3[gi0],x0,y0);}
-    var t1=0.5-x1*x1-y1*y1;if(t1>=0){t1*=t1;n1=t1*t1*dot(grad3[gi1],x1,y1);}
-    var t2=0.5-x2*x2-y2*y2;if(t2>=0){t2*=t2;n2=t2*t2*dot(grad3[gi2],x2,y2);}
-    return 70*(n0+n1+n2);
-  };
-}
-
-/* ---------- compute GSI tile from lat/lon ---------- */
-function lonLatToTile(lon,lat,z){
-  var n=Math.pow(2,z);
-  var x=Math.floor((lon+180)/360*n);
-  var lr=lat*Math.PI/180;
-  var y=Math.floor((1-Math.log(Math.tan(lr)+1/Math.cos(lr))/Math.PI)/2*n);
-  return {x:x,y:y};
-}
-
-/* ---------- terrain scene ---------- */
-function initScene(){
-  var canvas=document.getElementById("bg-canvas");
-  var scene=new THREE.Scene();
-  scene.fog=new THREE.FogExp2(0x050a07,0.08);
-  var camera=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.1,100);
-  var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  const canvas=document.getElementById('hero-canvas');
+  const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
   renderer.setSize(innerWidth,innerHeight);
 
-  var SEG=255;
-  var geo=new THREE.PlaneGeometry(10,10,SEG,SEG);
-  var pos=geo.attributes.position;
-  var SCALE=0.003, maxH={v:1};
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,100);
+  camera.position.set(0,4,7);
+  camera.lookAt(0,0,0);
 
-  var uniforms={uOpacity:{value:0},uMax:{value:2.0}};
-  var mat=new THREE.ShaderMaterial({
-    uniforms:uniforms, transparent:true,
-    vertexShader:"varying float vH; void main(){ vH=position.y; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }",
-    fragmentShader:[
-      "uniform float uOpacity; uniform float uMax; varying float vH;",
-      "void main(){",
-      " vec3 low=vec3(0.051,0.125,0.086);",   // #0d2016
-      " vec3 ridge=vec3(0.102,0.227,0.165);", // #1a3a2a
-      " vec3 peak=vec3(0.176,0.353,0.239);",  // #2d5a3d
-      " float h=clamp(vH/max(uMax,0.0001),0.0,1.0);",
-      " vec3 col = h<0.5 ? mix(low,ridge,h*2.0) : mix(ridge,peak,(h-0.5)*2.0);",
-      " gl_FragColor=vec4(col,uOpacity);",
-      "}"
-    ].join("\n")
-  });
-  var mesh=new THREE.Mesh(geo,mat);
+  // 国土地理院でロードした地形データを使ったワイヤーフレーム
+  const geo=new THREE.PlaneGeometry(16,16,64,64);
+  geo.rotateX(-Math.PI/2);
+  const pos=geo.attributes.position;
+
+  // Simplex風ノイズで山岳地形
+  function noise(x,y){
+    return Math.sin(x*1.1+.3)*Math.cos(y*.9+.5)*.8
+          +Math.sin(x*.4+1.1)*Math.cos(y*.6+.8)*.5
+          +Math.sin(x*2.2+.7)*Math.cos(y*1.8+.2)*.15;
+  }
+  for(let i=0;i<pos.count;i++){
+    const x=pos.getX(i),z=pos.getZ(i);
+    pos.setY(i,noise(x,z));
+  }
+  pos.needsUpdate=true;
+  geo.computeVertexNormals();
+
+  const wire=new THREE.WireframeGeometry(geo);
+  const mat=new THREE.LineBasicMaterial({color:0xc9a84c,transparent:true,opacity:.08});
+  const mesh=new THREE.LineSegments(wire,mat);
   scene.add(mesh);
 
-  var wire=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:0xc9a84c,wireframe:true,transparent:true,opacity:0}));
-  scene.add(wire);
+  // マウス追従
+  let ox=0,oy=0;
+  document.addEventListener('mousemove',e=>{
+    ox=(e.clientX/innerWidth-.5)*.6;
+    oy=(e.clientY/innerHeight-.5)*.3;
+  });
 
-  function applyHeights(getH){
-    var maxv=0.0001, N=SEG+1;
-    for(var row=0;row<N;row++){
-      for(var col=0;col<N;col++){
-        var idx=row*N+col;
-        var hgt=getH(col,row,N)*SCALE;
-        pos.setZ(idx,hgt);
-        if(hgt>maxv)maxv=hgt;
-      }
-    }
-    pos.needsUpdate=true;
-    geo.rotateX(-Math.PI/2);      // 水平に倒す → 標高は+Yへ
-    geo.computeVertexNormals();
-    uniforms.uMax.value=maxv;
-    fadeIn();
-  }
-  function fadeIn(){
-    if(hasGsap){
-      gsap.to(uniforms.uOpacity,{value:1,duration:2,ease:"power2.out"});
-      gsap.to(wire.material,{opacity:0.05,duration:2,ease:"power2.out"});
-    }else{uniforms.uOpacity.value=1;wire.material.opacity=0.05;}
-  }
-
-  /* --- 国土地理院 標高タイル取得 --- */
-  function loadDEM(){
-    var z=12, t=lonLatToTile(130.692,33.636,z);
-    var img=new Image();
-    img.crossOrigin="anonymous";
-    img.onload=function(){
-      try{
-        var c=document.createElement("canvas");c.width=256;c.height=256;
-        var ctx=c.getContext("2d");ctx.drawImage(img,0,0,256,256);
-        var data=ctx.getImageData(0,0,256,256).data; // throws if tainted
-        applyHeights(function(col,row,N){
-          // 256x256 tile を 256x256 頂点へ対応
-          var px=Math.min(255,col), py=Math.min(255,row);
-          var p=(py*256+px)*4, r=data[p],g=data[p+1],b=data[p+2];
-          if(r===128&&g===0&&b===0) return 0; // NODATA
-          var x=r*65536+g*256+b;
-          return x<8388608 ? x*0.01 : (x-16777216)*0.01;
-        });
-        console.log("[terrain] GSI DEM tile loaded:",z,t.x,t.y);
-      }catch(err){ console.warn("[terrain] DEM decode failed, fallback:",err.message); fallback(); }
-    };
-    img.onerror=function(){ console.warn("[terrain] DEM tile fetch failed, fallback"); fallback(); };
-    img.src="https://cyberjapandata.gsi.go.jp/xyz/dem_png/"+z+"/"+t.x+"/"+t.y+".png";
-  }
-  function fallback(){
-    var sx=makeSimplex();
-    applyHeights(function(col,row,N){
-      var x=col/N*4, y=row/N*4, h=0, amp=120, fr=1;
-      for(var o=0;o<4;o++){ h+=sx(x*fr,y*fr)*amp; amp*=0.5; fr*=2; }
-      return Math.max(0,h+60);
-    });
-  }
-  loadDEM();
-
-  /* --- 楕円軌道カメラ（周期30秒） --- */
-  var orbit={a:0};
-  if(hasGsap) gsap.to(orbit,{a:Math.PI*2,duration:30,repeat:-1,ease:"none"});
-  function render(){
-    if(!hasGsap) orbit.a+=0.0035;
-    var xr=5+Math.sin(orbit.a)*1;        // 半径 x 4〜6
-    camera.position.set(Math.cos(orbit.a)*xr,3,Math.sin(orbit.a)*4.5);
+  let t=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    t+=.002;
+    camera.position.x+=(ox-camera.position.x)*.03;
+    camera.position.y+=(-oy+4-camera.position.y)*.03;
     camera.lookAt(0,0,0);
+    mesh.rotation.y=t*.1;
     renderer.render(scene,camera);
-    requestAnimationFrame(render);
   }
-  render();
-  addEventListener("resize",function(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+  animate();
+
+  window.addEventListener('resize',()=>{
+    camera.aspect=innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth,innerHeight);
+  });
+})();
+
+// NAV SCROLL
+ScrollTrigger.create({
+  start:'top -60',
+  onUpdate:self=>{
+    document.getElementById('nav').classList.toggle('scrolled',self.progress>0);
+  }
+});
+
+// PHONE FAB
+ScrollTrigger.create({
+  start:'top -200',
+  onEnter:()=>document.getElementById('phoneFab').classList.add('show'),
+  onLeaveBack:()=>document.getElementById('phoneFab').classList.remove('show')
+});
+
+// INTERSECTION OBSERVER REVEAL
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}});
+},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.io').forEach(el=>io.observe(el));
+
+// FORM
+function submitForm(){
+  const n=document.getElementById('fname').value;
+  const t=document.getElementById('ftel').value;
+  const m=document.getElementById('fmsg').value;
+  if(!n||!t||!m){alert('お名前・電話番号・お問い合わせ内容をご入力ください。');return}
+  document.getElementById('contactForm').style.display='none';
+  document.getElementById('formThanks').style.display='block';
 }
 
-if(hasThree){ try{ initScene(); }catch(e){ console.warn("scene init failed",e); } }
-})();
+// HERO GSAP entrance
+gsap.from('.hero-badge',{opacity:0,y:20,duration:.8,delay:.5});
+gsap.from('.hero-title',{opacity:0,y:40,duration:1,delay:.7,ease:'power3.out'});
+gsap.from('.hero-sub',{opacity:0,y:30,duration:.8,delay:1,ease:'power3.out'});
+gsap.from('.hero-btns',{opacity:0,y:20,duration:.8,delay:1.2,ease:'power3.out'});
+gsap.from('.hero-scroll-hint',{opacity:0,duration:.8,delay:1.5});
 </script>
 </body>
 </html>
