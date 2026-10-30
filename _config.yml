@@ -1,0 +1,11 @@
+exclude:
+  - node_modules
+  - tests
+  - tools
+  - _source
+  - package.json
+  - package-lock.json
+  - playwright.config.js
+  - README.md
+  - playwright-report
+  - test-results

@@ -1,0 +1,7 @@
+node_modules/
+playwright-report/
+test-results/
+_source/terrain-source.json
+_source/*.blend1
+_source/terrain-poster.png
+.DS_Store
